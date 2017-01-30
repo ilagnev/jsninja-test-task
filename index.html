@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <script>
+            var webSocket = new WebSocket('ws://nuclear.t.javascript.ninja');
+            webSocket.onclose = function(event) {};
+            webSocket.onopen = function(event) {};
+
+            var lastState = null;
+            var state = [null, null, null, null];
+
+            webSocket.onmessage = function(event) {
+                //alert('onmessage, ' + event.data);
+                lastState = JSON.parse(event.data).stateId;
+                //console.log(event.data);
+            };
+
+            function checkState () {
+                webSocket.send(JSON.stringify({action: "check", "lever1": 0, "lever2": 1, stateId: lastState}));
+            }
+
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
