@@ -1,6 +1,6 @@
-var lastStateId = null;
-var leveragesState = [null, null, null, null];
-var turned = 1, unturned = 0;
+var lastStateId = null,
+    leveragesState = [null, null, null, null],
+    turned = 1, unturned = 0;
 
 var webSocket = new WebSocket('ws://nuclear.t.javascript.ninja');
 webSocket.onmessage = function(event) {
@@ -16,23 +16,35 @@ webSocket.onmessage = function(event) {
             // my job is done here, i hope to join the course :]
             return webSocket.close();
         }
-    } else if (!!data.action) {
+    } else if (!!data.action && data.action == "check") {
         // compare and apply new data
-        compareLeverages(data);
-    } else {
-        // message about leverage pull
+        if (data.same) {
+            // set initial state for first lever
+            if (leveragesState[data.lever1] == null) 
+                leveragesState[data.lever1] = turned;
+
+            // set same state for next lever
+            leveragesState[data.lever2] = leveragesState[data.lever1];
+        }
+    } else if (!!data.stateId) {
+        // state changed
         lastStateId = data.stateId;
 
-        // switch leverage state
+        // change pulled leverage state
         if (leveragesState[data.pulled] != null) {
             leveragesState[data.pulled] ^= 1;
         }
 
+        console.log('current state:', leveragesState);
+
         // check unknown leverages state
         if (leveragesState.indexOf(null) > -1) 
-            checkUnknownLeverages();
-
-        console.log('current state:', leveragesState);
+            webSocket.send(JSON.stringify({
+                action: "check", 
+                "lever1": leveragesState.indexOf(null) ? leveragesState.indexOf(null) - 1 : 0,
+                "lever2": leveragesState.indexOf(null) ? leveragesState.indexOf(null) : 1,
+                stateId: lastStateId
+            }));
 
         if (leveragesState == "1,1,1,1") {
             console.log('all leverages in same state, try to power off');
@@ -43,26 +55,3 @@ webSocket.onmessage = function(event) {
         }
     }
 };
-
-function compareLeverages(state) {
-    if (!state.same) return;
-
-    // set initial state for first lever
-    if (leveragesState[state.lever1] == null) 
-        leveragesState[state.lever1] = turned;
-
-    // set same state for next lever
-    leveragesState[state.lever2] = leveragesState[state.lever1];
-}
-
-function checkUnknownLeverages() {
-    var lever1 = leveragesState.indexOf(null) ? leveragesState.indexOf(null) - 1 : 0;
-        lever2 = leveragesState.indexOf(null) ? leveragesState.indexOf(null) : 1 ;
-
-    webSocket.send(JSON.stringify({
-        action: "check", 
-        "lever1": lever1,
-        "lever2": lever2,
-        stateId: lastStateId
-    }));
-}
