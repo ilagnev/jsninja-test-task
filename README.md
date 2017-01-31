@@ -1,6 +1,7 @@
 # jsninja test task
 
 Для предотвращения аварии необходимо перейти [по этой ссылке](http://ilagnev.com/jsninja)
+
 Открыв консоль можно увидеть процесс выполнения программы и в итоге выключить Кейтлин
 ![resolved-example](resolved-example.png)
 
