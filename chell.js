@@ -2,6 +2,8 @@ var lastStateId = null,
     leveragesState = [null, null, null, null],
     turned = 1, unturned = 0;
 
+if (WebSocket == undefined) var WebSocket = require('ws');
+
 var webSocket = new WebSocket('ws://nuclear.t.javascript.ninja');
 webSocket.onmessage = function(event) {
     var data = JSON.parse(event.data);
