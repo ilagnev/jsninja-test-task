@@ -16,4 +16,4 @@
 
 `docker run -it --rm -v "$PWD":/usr/src/app -w /usr/src/app node:latest /bin/bash -c "npm install --silent ws; node chell.js"`
 
-![docket-example](docket-example.png)
+![node-example](node-example.png)
