@@ -5,7 +5,7 @@
 А для чего это все можно узнать на сайте http://javascript.ninja/
 
 ## Запуск через браузер
-Для предотвращения аварии необходимо перейти на [ilagnev.com/jsninja](http://ilagnev.com/jsninja) и открыть Developer Tools (cmd+alt+i). 
+Для предотвращения аварии необходимо перейти на [ilagnev.com/jsninja-test-task](http://ilagnev.com/jsninja-test-task) и открыть Developer Tools (cmd+alt+i). 
 Открыв вкладку консоли можно увидеть процесс выполнения программы и в итоге выключить Кейтлин
 
 ![resolved-example](resolved-example.png)
